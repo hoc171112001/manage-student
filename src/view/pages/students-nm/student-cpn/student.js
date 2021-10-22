@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "antd";
-import { Table, Tag, Space } from "antd";
-import {useDispatch, useSelector} from 'react-redux'
+import { Table, Tag, Space, Typography } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 //
-import * as type from '../../../../redux/const/const'
+import * as type from "../../../../redux/const/const";
+import { getToken } from "../../../../helper/helper";
 const { Search } = Input;
 
 /**
@@ -28,7 +29,7 @@ export const Student = (props) => {
     {
       title: "Address",
       dataIndex: "addr",
-      key: "addr", 
+      key: "addr",
     },
     {
       title: "Classes",
@@ -61,63 +62,35 @@ export const Student = (props) => {
       ),
     },
   ];
-  const data = [
-    {
-      id: 1,
-      name: "Hoàng Văn Học",
-      classes: ["REACTJS_7103SE"],
-      age: 19,
-      addr: "BG",
-    },
-    {
-      id: 2,
-      name: "Nguyễn Văn Thuần",
-      classes: ["REACTJS_7103SE", "NODEJS_2107"],
-      age: 50,
-      addr: "BG",
-    },
-    {
-      id: 3,
-      name: "Ngọ Văn Tuấn",
-      classes: ["REACTJS_7103SE", "SQL-XAMPP"],
-      age: 20,
-      addr: "HN",
-    },
-    {
-      id: 4,
-      name: "Hoàng Đăng Dương",
-      classes: ["REACTJS_7103SE", "CNTT-BK HN"],
-      age: 19,
-      addr: "BG",
-    },
-    {
-      id: 5,
-      name: "Lê Văn Hậu",
-      classes: ["CD19CNTT2", "SQL-XAMPP"],
-      age: 20,
-      addr: "TP-HCM",
-    },
-    {
-      id: 6,
-      name: "Lê Vũ Bảo Khanh",
-      classes: ["CD19CNTT2"],
-      age: 22,
-      addr: "BR-VT",
-    },
-  ];
+  let { Text } = Typography;
+  let [pageSize,setSize] = useState(5)
+  let [current,setCurrent] = useState(1)
   //actions
-  const dispatch = useDispatch()
-  let loading = useSelector((state)=>{
-    return state.student.loading
-})
-  useEffect(()=>{
-      dispatch({type:type.STUDENT_FETCH,payload:data})
-  },[])
-
+  const dispatch = useDispatch();
+  let { loading, data, message,total } = useSelector((state) => {
+    return state.student;
+  });
+  let token = getToken();
+  useEffect(() => {
+    dispatch({ type: type.STUDENT_FETCH, payload: {token, _page:current, _limit:pageSize} });
+  }, [current,pageSize]);
+  let onPageChange = (value)=>{
+    setCurrent(value)
+  }
   return (
     <div>
-      <Search placeholder="input search text" onSearch={onSearch} enterButton />
-      <Table columns={columns} dataSource={data} loading={loading}/>
+      <Search
+        placeholder="input search text"
+        onSearch={onSearch}
+        enterButton
+        loading={loading}
+      />
+      <Text type="danger" style={{ fontSize: "16px" }}>
+        {message}
+      </Text>
+      <Table columns={columns} dataSource={data} loading={loading} pagination={
+        {pageSize,current,total,onChange:onPageChange}
+        }/>
     </div>
   );
 };

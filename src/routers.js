@@ -11,7 +11,7 @@ import { Student } from "./view/pages/students-nm/student-cpn/student";
 
 const routers = [
   {
-    path: "/",
+    path: "/dasboard",
     key: "2",
     icon: <PieChartOutlined />,
     title: "Dashboard",

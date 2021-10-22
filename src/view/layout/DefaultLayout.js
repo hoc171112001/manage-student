@@ -95,7 +95,7 @@ export const DefaltLayout = ({ routers }) => {
                 </Route>
               );
             })}
-            <Route path="/">
+            <Route exact path="/">
               <NotFoundPage />
             </Route>
           </Switch>

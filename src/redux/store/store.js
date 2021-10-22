@@ -4,14 +4,13 @@ import { composeWithDevTools } from 'redux-devtools-extension'; // phục vụ d
 //import out library
 import reduceAll from '../reducers'
 import saga from '../saga/saga'
+import studentSaga from '../saga/student-saga'
 
 
 const sagaMiddleware = createSagaMiddleware()
 const store = createStore(reduceAll,composeWithDevTools(applyMiddleware(sagaMiddleware)))
 
 
-// store.subscribe(()=>{
-//     console.log(store.getState());
-// })
 export default store
 sagaMiddleware.run(saga)
+sagaMiddleware.run(studentSaga)
