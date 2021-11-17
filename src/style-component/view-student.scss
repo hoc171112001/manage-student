@@ -1,0 +1,80 @@
+.student-wrapper {
+  width: 80%;
+  min-height: 60vh;
+  justify-content: center;
+  align-items: center;
+  margin: 0px auto;
+}
+@mixin flexible($percent: 55%) {
+  height: 100%;
+  flex: $percent;
+  max-width: $percent;
+}
+@mixin span($fw:600) {
+  font-weight: $fw;
+}
+@mixin details {
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+.top-text{
+  text-align: center;
+  height: 30px;
+  line-height: 30px;
+  color: #fff;
+  @include details();
+  font-size: 18px;
+  background: $primaryColor;
+}
+.student-info {
+  min-height: 200px;
+  display: flex;
+  .info {
+      display: flex;
+    @include flexible($percent: 60%);
+    .avatar{
+        @include flexible($percent: 30%);
+        img:hover{
+            cursor: pointer;
+            opacity: .9;
+            border: $primaryColor 1px dashed;
+        }
+        .status{
+          margin-top: 9px;
+          font-weight: 600;
+          color: $primaryColor;
+        }
+    }
+    .about{
+        margin-left: 20px;
+        @include flexible($percent: 70%);
+        .info-details{
+          @include details()
+        }
+    }
+  }
+  .career {
+    @include flexible($percent: 40%);
+    .specialized{
+      @include details();
+      margin-left:20px;
+    }
+  }
+}
+.student-details{
+  display: flex;
+  min-height: 200px;
+  .left-info{
+    @include flexible($percent:60%);
+    .info-left{
+      @include details();
+    }
+  }
+  .right-info{
+    @include flexible($percent:40%);
+    .info-right{
+      @include details();
+      margin-left: 20px;
+    }
+  }
+}

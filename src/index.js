@@ -11,7 +11,7 @@ import store from './redux/store/store'
 
 let token = getToken(); // get token from local storage
 if (token) {
-  console.log(token);
+  // console.log(token);
   let decodeData = jwt.decode(token); // decode token dont need to private_key
   console.log(decodeData);
   //token n0t expire do this below:
@@ -39,7 +39,8 @@ ReactDOM.render(
     <Provider store={store}>
       <App/>
     </Provider>
-  </React.StrictMode>,
+  </React.StrictMode>
+  ,
   document.getElementById("root")
 );
 

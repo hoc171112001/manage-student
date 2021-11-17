@@ -5,6 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'; // phục vụ d
 import reduceAll from '../reducers'
 import saga from '../saga/saga'
 import studentSaga from '../saga/student-saga'
+import classesSaga from '../saga/classes-saga'
 
 
 const sagaMiddleware = createSagaMiddleware()
@@ -14,3 +15,4 @@ const store = createStore(reduceAll,composeWithDevTools(applyMiddleware(sagaMidd
 export default store
 sagaMiddleware.run(saga)
 sagaMiddleware.run(studentSaga)
+sagaMiddleware.run(classesSaga)

@@ -6,8 +6,19 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-//outta import
-import { Student } from "./view/pages/students-nm/student-cpn/student";
+import React from "react";
+//outta import lazy loading = if component dont even using so dont load this = higher performance
+// const Student = React.lazy(()=>import('./view/pages/students-nm/student-cpn/student'))
+const CreateStudent = React.lazy(()=>import('./view/pages/students-nm/add-student/addStudent'))
+const Editable = React.lazy(()=>import ('./view/pages/students-nm/editable/editField'))
+const ViewStudent = React.lazy(()=>import ('./view/pages/students-nm/view-student/viewStudent'))
+
+
+
+// import { Student } from "./view/pages/students-nm/student-cpn/student";
+// import CreateStudent from "./view/pages/students-nm/add-student/addStudent";
+// import  Editable  from "./view/pages/students-nm/editable/editField";
+// import  ViewStudent  from "./view/pages/students-nm/view-student/viewStudent";
 
 const routers = [
   {
@@ -20,47 +31,32 @@ const routers = [
   },
   {
     path: "",
-    key: "sub1",
+    key: "sub2",
     icon: <TeamOutlined />,
-    title: "Student",
+    title: "Manage Students",
     compn: "",
     child: [
       {
         path: "/createstudent",
         key: "3",
         title: "Create Student",
-        compn: <div>Create Student</div>,
+        compn: <CreateStudent/>,
         child: [],
       },
       {
-        path: "/liststudent",
-        key: "4",
-        title: "List Student",
-        compn: <Student />,
-        child: [],
-      },
-    ],
-  },
-  {
-    path: "",
-    key: "sub2",
-    icon: <FileOutlined />,
-    title: "Curriculum Vitae",
-    compn: "",
-    child: [
-      {
-        path: "/createcv",
+        path: "/students",
         key: "5",
-        title: "Create Curriculum Vitae",
-        compn: <div>Create Curriculum Vitae</div>,
+        title: "List Students",
+        compn: <Editable/>,
         child: [],
       },
       {
-        path: "/yourcv",
+        path: "/students/:key",
         key: "6",
-        title: "Your Curriculum Vitae",
-        compn: <div>Your Curriculum Vitae</div>,
+        title: "",
+        compn: <ViewStudent/>,
         child: [],
+        hidden:true
       },
     ],
   },

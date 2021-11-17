@@ -1,5 +1,5 @@
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
-import './App.css';
+import './App.scss';
 import { PrivateRoute } from './privateRoute/authroute';
 import routers from './routers';
 import { DefaltLayout } from './view/layout/DefaultLayout';
