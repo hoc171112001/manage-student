@@ -1,8 +1,20 @@
 import * as type from "../const/const";
 let initState = {
- data: [], loading: false, message: "", total: 0,deleteSucceed:false,delMessage:"",
- createSucceed:false,creMessage:"",updateMessage:"",updateSucceed:false,dataDetails:[],
- loadingDetails:false,messageDetails:"",
+  data: [],
+  loading: false,
+  message: "",
+  total: 0,
+  deleteSucceed: false,
+  delMessage: "",
+  createSucceed: false,
+  creMessage: "",
+  updateMessage: "",
+  updateSucceed: false,
+  dataDetails: [],
+  loadingDetails: false,
+  messageDetails: "",
+  updateDetailSuccess: false,
+  updateDetailMessage: "",
 };
 
 export function studentReducer(state = { initState }, action) {
@@ -59,73 +71,114 @@ export function studentReducer(state = { initState }, action) {
         messageDetails: action.message,
       };
     }
-
-
-
+    //update detials studnt top
+    case type.UPDATE_STUDENT_DETAILS_BOT: {
+      return {
+        ...state,
+        updateDetailSuccess: false,
+        updateDetailMessage: "",
+      };
+    }
+    case type.UPDATE_STUDENT_DETAILS_BOT_SUCCEEDED: {
+      return {
+        ...state,
+        updateDetailSuccess: true,
+        updateDetailMessage: "Update Succeed",
+      };
+    }
+    case type.UPDATE_STUDENT_DETAILS_BOT_FAILED: {
+      return {
+        ...state,
+        updateDetailSuccess: false,
+        updateDetailMessage: action.message,
+      };
+    }
+//update detials studnt top
+case type.UPDATE_STUDENT_DETAILS_TOP: {
+  return {
+    ...state,
+    updateDetailSuccess: false,
+    updateDetailMessage: "",
+  };
+}
+case type.UPDATE_STUDENT_DETAILS_TOP_SUCCEEDED: {
+  return {
+    ...state,
+    updateDetailSuccess: true,
+    updateDetailMessage: "Update Succeed",
+  };
+}
+case type.UPDATE_STUDENT_DETAILS_TOP_FAILED: {
+  return {
+    ...state,
+    updateDetailSuccess: false,
+    updateDetailMessage: action.message,
+  };
+}
     //delete
     case type.DELETE_STUDENT: {
       return {
         ...state,
-        deleteSucceed:false,
-        delMessage:""
+        deleteSucceed: false,
+        delMessage: "",
       };
     }
     case type.DELETE_STUDENT_SUCCEEDED: {
       return {
         ...state,
-        deleteSucceed:true,
-        delMessage:"Delete successfully"
+        deleteSucceed: true,
+        delMessage: "Delete successfully",
       };
     }
     case type.DELETE_STUDENT_FAILED: {
       return {
         ...state,
-        deleteSucceed:false,
-        delMessage:action.message
+        deleteSucceed: false,
+        delMessage: action.message,
       };
     }
     //createstdnt
     case type.CREATE_STUDENT: {
       return {
         ...state,
-        createSucceed:false,
-        creMessage:""
+        createSucceed: false,
+        creMessage: "",
       };
     }
     case type.CREATE_STUDENT_SUCCEEDED: {
       return {
         ...state,
-        createSucceed:true,
-        creMessage:"Created successfully!"
+        createSucceed: true,
+        creMessage: "Created successfully!",
       };
     }
     case type.CREATE_STUDENT_FAILED: {
       return {
         ...state,
-        createSucceed:false,
-        creMessage:action.message
+        createSucceed: false,
+        creMessage: action.message,
       };
     }
     //update
     case type.UPDATE_STUDENT: {
       return {
         ...state,
-        updateSucceed:false,
-        updateMessage:""
+        updateSucceed: false,
+        updateMessage: "",
       };
     }
     case type.UPDATE_STUDENT_SUCCEEDED: {
       return {
         ...state,
-        updateSucceed:true,
-        updateMessage:"Update successfully!"
+        updateSucceed: true,
+        updateMessage: "Update successfully!",
       };
     }
     case type.UPDATE_STUDENT_FAILED: {
       return {
         ...state,
-        updateSucceed:false,
-        updateMessage:action.message
+        updateSucceed: false,
+        updateMessage: action.message,
       };
     }
 

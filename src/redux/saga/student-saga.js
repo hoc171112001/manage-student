@@ -48,12 +48,32 @@ function* updateStudent(action) {
     yield put({ type: type.UPDATE_STUDENT_FAILED, message: e.message });
   }
 }
+function* studentUpdateTopDetails(action) {
+  try {
+    yield call(api.updateStudentTopDetails, action.payload);
+    yield put({ type: type.UPDATE_STUDENT_DETAILS_TOP_SUCCEEDED});
+  } catch (e) {
+    yield put({ type: type.UPDATE_STUDENT_DETAILS_TOP_FAILED, message: e.message });
+  }
+}
+function* studentUpdateBotDetails(action) {
+  try {
+    yield call(api.updateStudentBotDetails, action.payload);
+    yield put({ type: type.UPDATE_STUDENT_DETAILS_BOT_SUCCEEDED});
+  } catch (e) {
+    yield put({ type: type.UPDATE_STUDENT_DETAILS_BOT_FAILED, message: e.message });
+  }
+}
+
 function* studentSaga() {
   yield takeEvery(type.STUDENT_FETCH, student);
   yield takeEvery(type.DELETE_STUDENT, deleteStudent);
   yield takeEvery(type.CREATE_STUDENT, createStudent);
   yield takeEvery(type.UPDATE_STUDENT, updateStudent);
   yield takeEvery(type.DETAIL_STUDENT_FETCH, studentDetails);
+  yield takeEvery(type.UPDATE_STUDENT_DETAILS_TOP, studentUpdateTopDetails);
+  yield takeEvery(type.UPDATE_STUDENT_DETAILS_BOT, studentUpdateBotDetails);
+
 }
 
 export default studentSaga;

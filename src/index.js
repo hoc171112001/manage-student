@@ -13,14 +13,23 @@ let token = getToken(); // get token from local storage
 if (token) {
   // console.log(token);
   let decodeData = jwt.decode(token); // decode token dont need to private_key
-  console.log(decodeData);
+  // console.log(decodeData);
   //token n0t expire do this below:
   try {
     let expTime = decodeData.exp * 1000;
     let now = new Date();
-    if (expTime > now) {
+    if (expTime > now && decodeData.username.trim() === "admin" ) {
       store.dispatch({
         type: "USER_FETCH_SUCCEEDED",
+        payload: {
+          username: decodeData.username,
+          token,
+        },
+      });
+    }
+    else if(expTime > now && decodeData.username.trim() === "guest"){
+      store.dispatch({
+        type: "GUEST_FETCH_SUCCEEDED",
         payload: {
           username: decodeData.username,
           token,
@@ -35,11 +44,11 @@ if (token) {
 //test
 
 ReactDOM.render(
-  <React.StrictMode>
+
     <Provider store={store}>
       <App/>
     </Provider>
-  </React.StrictMode>
+
   ,
   document.getElementById("root")
 );

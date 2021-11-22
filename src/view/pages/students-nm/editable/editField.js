@@ -10,8 +10,8 @@ import {
   Select,
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import {useHistory} from 'react-router-dom'
-import { getToken, debounce} from "../../../../helper/helper";
+import { useHistory } from "react-router-dom";
+import { getToken, debounce } from "../../../../helper/helper";
 import * as type from "../../../../redux/const/const";
 /**
  * @author
@@ -19,8 +19,8 @@ import * as type from "../../../../redux/const/const";
  **/
 
 const Editable = (props) => {
-  const history = useHistory()
-  let [pageSize, setSize] = useState(6);
+  const history = useHistory();
+  let [pageSize] = useState(6);
   let [current, setCurrent] = useState(1);
   let [q, setQ] = useState("");
   let dispatch = useDispatch();
@@ -30,10 +30,17 @@ const Editable = (props) => {
   const [editingKey, setEditingKey] = useState("");
   const [children, setChild] = useState([]);
   let [newClasses, setNewClass] = useState([]);
-  const [details,setDetails] = useState(null)
+  const [details, setDetails] = useState(null);
 
-
-  let { loading, total, delMessage, deleteSucceed, updateSucceed, updateMessage,dataDetails} = useSelector((state) => {
+  let {
+    loading,
+    total,
+    delMessage,
+    deleteSucceed,
+    updateSucceed,
+    updateMessage,
+    dataDetails,
+  } = useSelector((state) => {
     return state.student;
   });
   let dataApi = useSelector((state) => {
@@ -49,19 +56,18 @@ const Editable = (props) => {
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
   }, [current, pageSize]);
-  useEffect(()=>{
-    setCurrent(1)
+  useEffect(() => {
+    setCurrent(1);
     dispatch({
       type: type.STUDENT_FETCH,
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
-  },[deleteSucceed])
-  useEffect(()=>{
-    if(dataDetails){
-      setDetails(dataDetails)
-      console.log(dataDetails);
+  }, [deleteSucceed]);
+  useEffect(() => {
+    if (dataDetails) {
+      setDetails(dataDetails);
     }
-  },[dataDetails])
+  }, [dataDetails]);
   useEffect(() => {
     if (dataApi && dataApi.length) {
       setData(
@@ -123,21 +129,23 @@ const Editable = (props) => {
     );
   };
   const onSearch = (value) => {
-    delay(value)
-  }
-  const onSearhChange = (e)=>{
-    setTimeout(()=>{
-      let value = e.target.value
-      delay(value)
-    },500)
-  }
-  const search = (query)=>{
-    setCurrent(1)
-    setQ(query)
-    dispatch({ type: type.STUDENT_FETCH, payload: {token, _page:1, _limit:pageSize,query} });
-    console.log(query);
-  }
-  const delay = debounce(search,500)
+    delay(value);
+  };
+  const onSearhChange = (e) => {
+    setTimeout(() => {
+      let value = e.target.value;
+      delay(value);
+    }, 500);
+  };
+  const search = (query) => {
+    setCurrent(1);
+    setQ(query);
+    dispatch({
+      type: type.STUDENT_FETCH,
+      payload: { token, _page: 1, _limit: pageSize, query },
+    });
+  };
+  const delay = debounce(search, 500);
   const isEditing = (record) => record.key === editingKey;
   const onPageChange = (value) => {
     setCurrent(value);
@@ -152,7 +160,10 @@ const Editable = (props) => {
     });
     setEditingKey(record.key);
     setNewClass(record.classes);
-    dispatch({type:type.DETAIL_STUDENT_FETCH,payload:{token,key:record.key}})
+    dispatch({
+      type: type.DETAIL_STUDENT_FETCH,
+      payload: { token, key: record.key },
+    });
   };
 
   const cancel = (value) => {
@@ -160,7 +171,6 @@ const Editable = (props) => {
   };
 
   function handleChange(value) {
-    console.log(value);
     setNewClass(value);
   }
   const save = async (key) => {
@@ -169,14 +179,15 @@ const Editable = (props) => {
       const newData = [...data];
       const index = newData.findIndex((item) => key === item.key);
       if (index > -1) {
-        console.log("new class:", newClasses);
         const item = newData[index];
         newData.splice(index, 1, { ...item, ...row });
         newData[index].classes = [...newClasses];
         setData(newData);
         setEditingKey("");
-        console.log("asd",newData[index]);
-        dispatch({type:type.UPDATE_STUDENT,payload:{token,data:{...newData[index]},remainData:details}})
+        dispatch({
+          type: type.UPDATE_STUDENT,
+          payload: { token, data: { ...newData[index] }, remainData: details },
+        });
       } else {
         newData.push(row);
         setData(newData);
@@ -187,22 +198,28 @@ const Editable = (props) => {
     }
   };
   const deleteCol = (record) => {
-    dispatch({type:type.DELETE_STUDENT,payload:{id:record.key,token}})
+    dispatch({ type: type.DELETE_STUDENT, payload: { id: record.key, token } });
   };
-  const viewStudent = (record)=>{
-    history.push(`/students/${record.key}`)
-  }
+  const viewStudent = (record) => {
+    history.push(`/students/${record.key}`);
+  };
   const columns = [
     {
       title: "Tên",
       dataIndex: "name",
       width: "25%",
       editable: true,
-      render:(name,record)=>{
+      render: (name, record) => {
         return (
-          <a onClick={()=>{viewStudent(record)}}>{name}</a>
-        )
-      }
+          <a
+            onClick={() => {
+              viewStudent(record);
+            }}
+          >
+            {name}
+          </a>
+        );
+      },
     },
     {
       title: "Tuổi",
@@ -248,6 +265,7 @@ const Editable = (props) => {
                   </Tag>
                 );
               }
+              return "none";
             })}
           </>
         );
@@ -316,15 +334,16 @@ const Editable = (props) => {
   return (
     <>
       <Form form={form} component={false}>
-      <Search
-        placeholder="input search text"
-        onSearch={onSearch}
-        enterButton
-        loading={loading}
-        onChange={onSearhChange}
-      />
-      <Text type={deleteSucceed?"success":"danger"}>{delMessage}</Text><br/>
-      <Text type={updateSucceed?"success":"danger"}>{updateMessage}</Text>
+        <Search
+          placeholder="input search text"
+          onSearch={onSearch}
+          enterButton
+          loading={loading}
+          onChange={onSearhChange}
+        />
+        <Text type={deleteSucceed ? "success" : "danger"}>{delMessage}</Text>
+        <br />
+        <Text type={updateSucceed ? "success" : "danger"}>{updateMessage}</Text>
 
         <Table
           components={{
@@ -348,4 +367,4 @@ const Editable = (props) => {
     </>
   );
 };
- export default Editable
+export default Editable;

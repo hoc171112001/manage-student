@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect} from "react";
 import { Form, Input, Button, Select ,Typography} from "antd";
 import {useDispatch,useSelector} from 'react-redux';
 
@@ -12,27 +12,12 @@ import {getToken} from "../../../../helper/helper"
 
 const CreateStudent = (props) => {
     let {Text} = Typography
-  const [classes, setClass] = useState([
-    {
-        key:1,
-        name:"REACTJS-7103"
-    },
-    {
-        key:2,
-        name:"CD19CNTT2"
-    },
-    {
-        key:3,
-        name:"NODEJS-2107"
-    },
-    {
-        key:4,
-        name:"SQL-XAMPP"
-    },
-  ]);
   const token = getToken()
   let {createSucceed,creMessage} = useSelector((state)=>{
       return state.student
+  })
+  let {classData} = useSelector((state)=>{
+    return state.classes
   })
   let dispatch = useDispatch()
   const { Option } = Select;
@@ -51,42 +36,15 @@ const CreateStudent = (props) => {
     },
   };
   const [form] = Form.useForm();
-
-  //   const onGenderChange = (value) => {
-  //     switch (value) {
-  //       case "male":
-  //         form.setFieldsValue({
-  //           note: "Hi, man!",
-  //         });
-  //         return;
-
-  //       case "female":
-  //         form.setFieldsValue({
-  //           note: "Hi, lady!",
-  //         });
-  //         return;
-
-  //       case "other":
-  //         form.setFieldsValue({
-  //           note: "Hi there!",
-  //         });
-  //     }
-  //   };
-
   const onFinish = (values) => {
     dispatch({type:type.CREATE_STUDENT,payload:{data:values,token}})
   };
-
+  useEffect(()=>{
+    dispatch({type:type.FETCH_CLASSES,payload:token})
+  },[])
   const onReset = () => {
     form.resetFields();
   };
-
-  //   const onFill = () => {
-  //     form.setFieldsValue({
-  //       note: "Hello world!",
-  //       gender: "male",
-  //     });
-  //   };
   return (
     <>
       <h2>Create students</h2>
@@ -139,9 +97,9 @@ const CreateStudent = (props) => {
             //   onChange={onGenderChange}
             allowClear
           >
-            {classes.map((classes) => {
-              return <Option key={classes.key} value={classes.name}>{classes.name}</Option>;
-            })}
+            {classData?classData.map((classes)=>{
+              return <Option key={classes.classname}>{classes.classname}</Option>
+            }):"Loading..."}
           </Select>
         </Form.Item>
         <Form.Item {...tailLayout}>

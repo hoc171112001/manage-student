@@ -7,12 +7,12 @@ import { Redirect, Route } from "react-router";
  **/
 
 export const PrivateRoute = ({ children, ...rest }) => {
-  let isLogged = useSelector(state=>state.auth.isLogged)
+  let {isLogged,isGuest} = useSelector(state=>state.auth)
   return (
     <Route
       {...rest}
       render={({location}) => {
-        return !isLogged ? (
+        return !isLogged && !isGuest ? (
           <Redirect to={{ pathname: "/login", state: { location } }} />
         ) : (
           children

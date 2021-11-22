@@ -6,12 +6,12 @@ import {
 import React from "react";
 //outta import lazy loading = if component dont even using so dont load this = higher performance
 // const Student = React.lazy(()=>import('./view/pages/students-nm/student-cpn/student'))
-const CreateStudent = React.lazy(()=>import('./view/pages/students-nm/add-student/addStudent'))
-const Editable = React.lazy(()=>import ('./view/pages/students-nm/editable/editField'))
-const ViewStudent = React.lazy(()=>import ('./view/pages/students-nm/view-student/viewStudent'))
+// const CreateStudent = React.lazy(()=>import('./view/pages/students-nm/add-student/addStudent'))
+// const Editable = React.lazy(()=>import ('./view/pages/students-nm/editable/editField'))
+// const ViewStudent = React.lazy(()=>import ('./view/pages/students-nm/view-student/viewStudent'))
 
 
-const routers = [
+const routers2 = [
   {
     path: "/dasboard",
     key: "2",
@@ -24,32 +24,25 @@ const routers = [
     path: "",
     key: "sub2",
     icon: <TeamOutlined />,
-    title: "Manage Students",
+    title: "View Students",
     compn: "",
     child: [
-      {
-        path: "/createstudent",
-        key: "3",
-        title: "Create Student",
-        compn: <CreateStudent/>,
-        child: [],
-      },
       {
         path: "/students",
         key: "5",
         title: "List Students",
-        compn: <Editable/>,
+        compn: <div>list student</div>,
         child: [],
       },
-      {
-        path: "/students/:key",
-        key: "6",
-        title: "",
-        compn: <ViewStudent/>,
-        child: [],
-        hidden:true
-      },
+    //   {
+    //     path: "/students/:key",
+    //     key: "6",
+    //     title: "",
+    //     compn: <ViewStudent/>,
+    //     child: [],
+    //     hidden:true
+    //   },
     ],
   },
 ];
-export default routers;
+export default routers2;

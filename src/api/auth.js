@@ -6,6 +6,11 @@ export function login(data) {
     return response.data;
   });
 }
+export function loginGuest(data) {
+  return axios.post(baseApi + "/auth/login", data).then((response) => {
+    return response.data;
+  });
+}
 export function fetchStudent(data) {
   const AuthStr = "Bearer " + data.token;
   let option = {
@@ -65,7 +70,16 @@ export function createStudent(data) {
         nation: "",
         religion: "",
         mssv: "",
+        union:"",
+        cmnd:"",
+        bhyt:"",
+        phone:"",
+        email:""
       },
+      gender:"",
+      roles:"",
+      levelEducate:"",
+      typeEducate:""
     },
     headers: { Authorization: AuthStr },
   }).then((res) => {
@@ -92,6 +106,58 @@ export function updateStudent(data) {
       age: data.data.age,
       classes: [...data.data.classes],
       addr: data.data.address,
+    },
+    headers: { Authorization: AuthStr },
+  }).then((res) => {
+    return res.data;
+  });
+}
+export function updateStudentTopDetails(data) {
+  const AuthStr = "Bearer " + data.token;
+  return axios({
+    method: "put",
+    url: `${baseApi}/students/${data.key}`,
+    data: {
+      ...data.remainData,
+      name: data.data.name,
+      classes: [...data.data.classes],
+      course:data.data.course,
+      gender:data.data.gender,
+      levelEducate:data.data.levelEducate,
+      roles:data.data.roles,
+      specialized:data.data.specialized,
+      typeEducate:data.data.typeEducate,
+      info:{
+        ...data.remainData.info,
+        mssv:data.data.mssv
+      }
+    },
+    headers: { Authorization: AuthStr },
+  }).then((res) => {
+    return res.data;
+  });
+}
+export function updateStudentBotDetails(data) {
+  const AuthStr = "Bearer " + data.token;
+  return axios({
+    method: "put",
+    url: `${baseApi}/students/${data.key}`,
+    data: {
+      ...data.remainData,
+      addr:data.data.address,
+      age:data.age,
+      info:{
+        ...data.remainData.info,
+        accommodations:data.data.accommodations,
+        birth:data.data.birth,
+        bhyt:data.data.bhyt,
+        cmnd:data.data.cmnd,
+        email:data.data.email,
+        nation:data.data.nation,
+        phone:data.data.phone,
+        religion:data.data.religion,
+        union:data.data.union,
+      }
     },
     headers: { Authorization: AuthStr },
   }).then((res) => {

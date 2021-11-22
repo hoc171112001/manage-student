@@ -16,19 +16,19 @@ const { Text } = Typography;
 export const Login = (props) => {
   // let [isSubmit, setSubmit] = useState(false);
   // let [messageErr, setMessageErr] = useState("");
-  let history = useHistory();
   let isSubmit = useSelector((state)=>{
     return state.auth.isSubmit
   })
   let messageErr = useSelector((state)=>{
     return state.auth.message
   })
-  let isLogged = useSelector(state=>state.auth.isLogged)
+  const history = useHistory();
+  let {isLogged,isGuest} = useSelector(state=>state.auth)
   useEffect(()=>{
-    if(isLogged){
+    if(isLogged || isGuest){
       history.push('/dasboard')
     }
-  },[isLogged])
+  },[isLogged,isGuest])
   let dispatch = useDispatch()
   const onFinish = (values) => {
     dispatch({ type: type.USER_LOGIN, payload: values });
@@ -37,12 +37,16 @@ export const Login = (props) => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+  const guestLogin=()=>{
+    console.log("guest logged in");
+    dispatch({type:type.GUEST_LOGIN,payload:{username:"guest",password:"123456"}})
+  }
   return (
     <Card
       className="card"
       title="Login"
-      extra={<a href="#">Register</a>}
       style={{ width: 500 }}
+      extra={<a onClick={guestLogin}>View with Guest</a>}
     >
       <Form
         name="basic"

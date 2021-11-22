@@ -23,6 +23,24 @@ function* login(action) {
     yield put({ type: type.USER_FETCH_FAILED, message: e.message });
   }
 }
+function* loginGuest(action) {
+  try {
+    const data = yield call(api.loginGuest, action.payload);
+    if(data.status){
+      saveToken(data.token)
+      yield put({ type: type.GUEST_FETCH_SUCCEEDED, payload:{
+        username:data.username,
+        token:data.token,
+        status:data.status
+      }});
+    }
+    else{
+    yield put({ type: type.GUEST_FETCH_FAILED, message: data.message });
+    }
+  } catch (e) {
+    yield put({ type: type.GUEST_FETCH_FAILED, message: e.message });
+  }
+}
 
 /*
   Starts fetchUser on each dispatched `USER_LOGIN` action.
@@ -30,6 +48,7 @@ function* login(action) {
 */
 function* mySaga() {
   yield takeEvery(type.USER_LOGIN, login);
+  yield takeEvery(type.GUEST_LOGIN, loginGuest);
 }
 
 /*

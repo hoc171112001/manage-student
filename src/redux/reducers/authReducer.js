@@ -5,6 +5,7 @@ let initState = {
   username: "",
   token: "",
   message: "",
+  isGuest:false,
 };
 
 export function authReducer(state = { initState }, action) {
@@ -30,6 +31,33 @@ export function authReducer(state = { initState }, action) {
     case type.USER_FETCH_FAILED: {
       return {
         isLogged: false,
+        isSubmit: false,
+        username: "",
+        token: "",
+        message: action.message,
+      };
+    }
+    case type.GUEST_LOGIN: {
+      return {
+        isGuest:false,
+        isSubmit: true,
+        username: "",
+        token: "",
+        message: "",
+      };
+    }
+    case type.GUEST_FETCH_SUCCEEDED: {
+      return {
+        isGuest: true,
+        isSubmit: false,
+        username: action.payload.username,
+        token: action.payload.token,
+        message: "",
+      };
+    }
+    case type.GUEST_FETCH_FAILED: {
+      return {
+        isGuest: false,
         isSubmit: false,
         username: "",
         token: "",
