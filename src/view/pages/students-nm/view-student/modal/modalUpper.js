@@ -13,6 +13,7 @@ export const ModalUpper = (props) => {
   const {classData} = useSelector((state)=>{
     return state.classes
   })
+  const {dataDetails} = useSelector(state=>state.student)
   const [form] = Form.useForm();
   useEffect(()=>{
     if(props.dataDetails){
@@ -29,6 +30,9 @@ export const ModalUpper = (props) => {
       });
     }
   },[props.dataDetails])
+  useEffect(()=>{
+    dispatch({type:type.DETAIL_STUDENT_FETCH,payload:{token:props.dispatchData.token,key:props.dispatchData.key}})
+  },[])
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -57,7 +61,7 @@ export const ModalUpper = (props) => {
       token:props.dispatchData.token,
       key:props.dataDetails.id,
       data:values,
-      remainData:props.dataDetails
+      remainData:dataDetails
     }})
 
   };

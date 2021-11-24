@@ -1,20 +1,22 @@
-import React, {useState,useEffect,useRef} from "react";
-import {storage} from '../../../../../firebasee/index'
-import axios from 'axios'
+import React, { useState, useEffect, useRef } from "react";
+import { storage } from "../../../../../firebasee/index";
+import axios from "axios";
+import { useDispatch } from "react-redux";
 /**
  * @author
  * @function Avatar
  **/
 
 export const Avatar = (props) => {
+  const dispatch = useDispatch();
   const uploadFileBtn = useRef(null);
   const [img, setImg] = useState(null);
   const [url, setUrl] = useState(
     "https://firebasestorage.googleapis.com/v0/b/fir-upload-db77d.appspot.com/o/image%2Fkonan.jpg?alt=media&token=d30638e6-e597-40e3-abff-b373655b2797"
   );
   const [progress, setProgress] = useState(0);
-  const dataDetails = props.dataDetails
-  const dispatchData = props.dispatchData
+  const dataDetails = props.dataDetails;
+  const dispatchData = props.dispatchData;
   const onHandleClick = () => {
     const uploadTask = storage.ref(`image/${img.name}`).put(img);
     uploadTask.on(
@@ -35,15 +37,19 @@ export const Avatar = (props) => {
           .getDownloadURL()
           .then((url) => {
             setUrl(url);
-            return axios({
-              method:'put',
-              url:`http://localhost:3001/students/${dispatchData.key}`,
-              data:{
+            axios({
+              method: "put",
+              url: `http://localhost:3001/students/${dispatchData.key}`,
+              data: {
                 ...dataDetails,
-                imgUrl:url
+                imgUrl: url,
               },
-              headers: { Authorization:`Bearer ${dispatchData.token}` }
-            })
+              headers: { Authorization: `Bearer ${dispatchData.token}` },
+            });
+            dispatch({
+              type: "DETAIL_STUDENT_FETCH",
+              payload: { key: dispatchData.key, token: dispatchData.token },
+            });
           });
       }
     );
@@ -58,11 +64,11 @@ export const Avatar = (props) => {
       setImg(event.target.files[0]);
     }
   };
-  useEffect(()=>{
-    if(dataDetails){
-      setUrl(dataDetails.imgUrl)
+  useEffect(() => {
+    if (dataDetails) {
+      setUrl(dataDetails.imgUrl);
     }
-  },[dataDetails])
+  }, [dataDetails]);
   return (
     <div className={props.class}>
       <img

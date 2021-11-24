@@ -1,14 +1,12 @@
-import { Dasboard } from "./view/pages/dasboard/dasboard";
 import {
   PieChartOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
 import React from "react";
-//outta import lazy loading = if component dont even using so dont load this = higher performance
-// const Student = React.lazy(()=>import('./view/pages/students-nm/student-cpn/student'))
-// const CreateStudent = React.lazy(()=>import('./view/pages/students-nm/add-student/addStudent'))
-// const Editable = React.lazy(()=>import ('./view/pages/students-nm/editable/editField'))
-// const ViewStudent = React.lazy(()=>import ('./view/pages/students-nm/view-student/viewStudent'))
+const DbGuest = React.lazy(() => import("./view/pages/dasboard/dbGuest"))
+const StudentGuest = React.lazy(() => import("./view/pages/students-nm/editable/guestViewStudent"))
+const GuestView = React.lazy(()=>import ("./view/pages/students-nm/guest-view/guestDetails"))
+
 
 
 const routers2 = [
@@ -17,7 +15,7 @@ const routers2 = [
     key: "2",
     icon: <PieChartOutlined />,
     title: "Dashboard",
-    compn: <Dasboard/>,
+    compn: <DbGuest/>,
     child: [],
   },
   {
@@ -31,17 +29,17 @@ const routers2 = [
         path: "/students",
         key: "5",
         title: "List Students",
-        compn: <div>list student</div>,
+        compn: <StudentGuest/>,
         child: [],
       },
-    //   {
-    //     path: "/students/:key",
-    //     key: "6",
-    //     title: "",
-    //     compn: <ViewStudent/>,
-    //     child: [],
-    //     hidden:true
-    //   },
+      {
+        path: "/students/:key",
+        key: "6",
+        title: "",
+        compn: <GuestView/>,
+        child: [],
+        hidden:true
+      },
     ],
   },
 ];

@@ -15,12 +15,12 @@ import { getToken, debounce } from "../../../../helper/helper";
 import * as type from "../../../../redux/const/const";
 /**
  * @author
- * @function Editable
+ * @function StudentGuest
  **/
 
-const Editable = (props) => {
+const StudentGuest = (props) => {
   const history = useHistory();
-  let [pageSize] = useState(10);
+  let [pageSize] = useState(6);
   let [current, setCurrent] = useState(1);
   let [q, setQ] = useState("");
   let dispatch = useDispatch();
@@ -31,6 +31,7 @@ const Editable = (props) => {
   const [children, setChild] = useState([]);
   let [newClasses, setNewClass] = useState([]);
   const [details, setDetails] = useState(null);
+
   let {
     loading,
     total,
@@ -55,13 +56,13 @@ const Editable = (props) => {
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
   }, [current, pageSize]);
-  useEffect(() => {
-    setCurrent(1);
-    dispatch({
-      type: type.STUDENT_FETCH,
-      payload: { token, _page: current, _limit: pageSize, query: q },
-    });
-  }, [deleteSucceed]);
+//   useEffect(() => {
+//     setCurrent(1);
+//     dispatch({
+//       type: type.STUDENT_FETCH,
+//       payload: { token, _page: current, _limit: pageSize, query: q },
+//     });
+//   }, [deleteSucceed]);
   useEffect(() => {
     if (dataDetails) {
       setDetails(dataDetails);
@@ -149,56 +150,56 @@ const Editable = (props) => {
   const onPageChange = (value) => {
     setCurrent(value);
   };
-  const edit = (record) => {
-    form.setFieldsValue({
-      name: "",
-      age: "",
-      address: "",
-      classes: [],
-      ...record,
-    });
-    setEditingKey(record.key);
-    setNewClass(record.classes);
-    dispatch({
-      type: type.DETAIL_STUDENT_FETCH,
-      payload: { token, key: record.key },
-    });
-  };
+//   const edit = (record) => {
+//     form.setFieldsValue({
+//       name: "",
+//       age: "",
+//       address: "",
+//       classes: [],
+//       ...record,
+//     });
+//     setEditingKey(record.key);
+//     setNewClass(record.classes);
+//     dispatch({
+//       type: type.DETAIL_STUDENT_FETCH,
+//       payload: { token, key: record.key },
+//     });
+//   };
 
-  const cancel = (value) => {
-    setEditingKey("");
-  };
+//   const cancel = (value) => {
+//     setEditingKey("");
+//   };
 
-  function handleChange(value) {
-    setNewClass(value);
-  }
-  const save = async (key) => {
-    try {
-      const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-        newData[index].classes = [...newClasses];
-        setData(newData);
-        setEditingKey("");
-        dispatch({
-          type: type.UPDATE_STUDENT,
-          payload: { token, data: { ...newData[index] }, remainData: details },
-        });
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey("");
-      }
-    } catch (errInfo) {
-      console.log("Validate Failed:", errInfo);
-    }
-  };
-  const deleteCol = (record) => {
-    dispatch({ type: type.DELETE_STUDENT, payload: { id: record.key, token } });
-  };
+//   function handleChange(value) {
+//     setNewClass(value);
+//   }
+//   const save = async (key) => {
+//     try {
+//       const row = await form.validateFields();
+//       const newData = [...data];
+//       const index = newData.findIndex((item) => key === item.key);
+//       if (index > -1) {
+//         const item = newData[index];
+//         newData.splice(index, 1, { ...item, ...row });
+//         newData[index].classes = [...newClasses];
+//         setData(newData);
+//         setEditingKey("");
+//         dispatch({
+//           type: type.UPDATE_STUDENT,
+//           payload: { token, data: { ...newData[index] }, remainData: details },
+//         });
+//       } else {
+//         newData.push(row);
+//         setData(newData);
+//         setEditingKey("");
+//       }
+//     } catch (errInfo) {
+//       console.log("Validate Failed:", errInfo);
+//     }
+//   };
+//   const deleteCol = (record) => {
+//     dispatch({ type: type.DELETE_STUDENT, payload: { id: record.key, token } });
+//   };
   const viewStudent = (record) => {
     history.push(`/students/${record.key}`);
   };
@@ -244,7 +245,6 @@ const Editable = (props) => {
             style={{ width: "100%" }}
             placeholder="Please select"
             defaultValue={newClasses}
-            onChange={handleChange}
           >
             {children.map((child) => {
               return <Option key={child}>{child}</Option>;
@@ -270,45 +270,7 @@ const Editable = (props) => {
         );
       },
     },
-    {
-      title: "Thao tác",
-      dataIndex: "operation",
-      render: (_, record) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <a
-              onClick={() => {
-                save(record.key);
-              }}
-              style={{
-                marginRight: 16,
-              }}
-            >
-              Save
-            </a>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <>
-            <Typography.Link
-              disabled={editingKey !== ""}
-              onClick={() => edit(record)}
-            >
-              Edit
-            </Typography.Link>
-            <Typography.Link
-              onClick={() => deleteCol(record)}
-              style={{ marginLeft: 16 }}
-            >
-              Delete
-            </Typography.Link>
-          </>
-        );
-      },
-    },
+    
   ];
   const mergedColumns = columns.map((col) => {
     if (!col.editable) {
@@ -366,4 +328,4 @@ const Editable = (props) => {
     </>
   );
 };
-export default Editable;
+export default StudentGuest;
