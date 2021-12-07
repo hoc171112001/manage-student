@@ -11,14 +11,14 @@ import {
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getToken, debounce } from "../../../../helper/helper";
-import * as type from "../../../../redux/const/const";
+import { getToken, debounce } from "../../../helper/helper";
+import * as type from "../../../redux/const/const";
 /**
  * @author
  * @function Editable
  **/
 
-const Editable = (props) => {
+const Teacher = (props) => {
   const history = useHistory();
   let [pageSize] = useState(10);
   let [current, setCurrent] = useState(1);
@@ -80,8 +80,6 @@ const Editable = (props) => {
           };
         })
       );
-    }else{
-      setData([])
     }
   }, [dataApi]);
   useEffect(() => {
@@ -199,7 +197,6 @@ const Editable = (props) => {
     }
   };
   const deleteCol = (record) => {
-    console.log(record);
     dispatch({ type: type.DELETE_STUDENT, payload: { id: record.key, token } });
   };
   const viewStudent = (record) => {
@@ -336,6 +333,7 @@ const Editable = (props) => {
   return (
     <>
       <Form form={form} component={false}>
+        {console.log(dataApi)}
         <Search
           placeholder="input search text"
           onSearch={onSearch}
@@ -369,4 +367,4 @@ const Editable = (props) => {
     </>
   );
 };
-export default Editable;
+export default Teacher;

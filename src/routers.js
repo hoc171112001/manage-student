@@ -9,7 +9,7 @@ import React from "react";
 const CreateStudent = React.lazy(()=>import('./view/pages/students-nm/add-student/addStudent'))
 const Editable = React.lazy(()=>import ('./view/pages/students-nm/editable/editField'))
 const ViewStudent = React.lazy(()=>import ('./view/pages/students-nm/view-student/viewStudent'))
-
+// const Teacher = React.lazy(()=>import ('./view/pages/teacher/teacher'))
 
 const routers = [
   {
@@ -51,5 +51,6 @@ const routers = [
       },
     ],
   },
+  
 ];
 export default routers;

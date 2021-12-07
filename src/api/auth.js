@@ -29,27 +29,32 @@ export function fetchStudent(data) {
     });
 }
 export function fetchStudentDetails(data) {
-  const AuthStr = "Bearer " + data.token;
+  if(data.id){
+    const AuthStr = "Bearer " + data.token;
   let option = {
     headers: { Authorization: AuthStr },
   };
   return axios
     .get(
-      `${baseApi}/students/${data.key}`,
+      `${baseApi}/students/${data.id}`,
       option
     )
     .then((response) => {
       return response.data
     });
+  }
 }
 export function deleteStudent(data) {
-  const AuthStr = "Bearer " + data.token;
+  if(data){
+    console.log(data);
+    const AuthStr = "Bearer " + data.token;
   let option = {
     headers: { Authorization: AuthStr },
   };
   return axios.delete(`${baseApi}/students/${data.id}`, option).then((res) => {
     return res.data;
   });
+  }
 }
 export function createStudent(data) {
   const AuthStr = "Bearer " + data.token;

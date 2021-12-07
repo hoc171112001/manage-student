@@ -18,7 +18,7 @@ import { ModalLower } from "./modal/modalLower";
  **/
 
 const ViewStudent = (props) => {
-  const { key } = useParams();
+ const { key } = useParams();
   const dispatch = useDispatch();
   const token = getToken();
   const [data, setData] = useState([]);
@@ -33,7 +33,7 @@ const ViewStudent = (props) => {
     dispatch({ type: type.FETCH_CLASSES, payload: token });
   }, []);
   useEffect(() => {
-    dispatch({ type: type.DETAIL_STUDENT_FETCH, payload: { token, key } });
+    dispatch({ type: type.DETAIL_STUDENT_FETCH, payload: { token, id:key } })
   }, [updateDetailSuccess]);
   useEffect(() => {
     if (dataApi) {
@@ -56,14 +56,14 @@ const ViewStudent = (props) => {
               dispatchData={{ token: token, key: key }}
               key={key}
             />
-            <About class="about" dataDetails={data}  key="2"/>
+            <About class="about" dataDetails={data}/>
           </div>
           <Career class="career" dataDetails={data} key={key}/>
         </div>
-        <ModalUpper dataDetails={data} dispatchData={{ token: token }} key="3"/>
+        <ModalUpper dataDetails={data} dispatchData={{ token: token }}/>
         <div className="top-text">THÔNG TIN CÁ NHÂN</div>
-        <Details class="student-details" dataDetails={data} key="4"/>
-        <ModalLower dataDetails={data} dispatchData={{ token: token }} key="5"/>
+        <Details class="student-details" dataDetails={data}/>
+        <ModalLower dataDetails={data} dispatchData={{ token: token }}/>
       </Spin>
     </div>
   );
