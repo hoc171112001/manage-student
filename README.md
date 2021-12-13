@@ -1,3 +1,18 @@
+Demo Website quản lý sinh viên với các chức năng cơ bản sau :
+ - thêm , sửa xóa sinh viên
+ - cập nhật thông tin chi tiết của học viên 
+ - chức năng đăng nhập: authen/author với Json-server : tài khoản admin có full chức năng , tài khoản khách chỉ đọc
+ - chức năng upload và lưu ảnh của học viên vào storage của firebase
+# Frame work: ReactJs - Create React App
+ - router-dom
+ - redux,redux-saga
+ - sử dụng component của antdesign
+ - styling với css module , scss và clsx
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
