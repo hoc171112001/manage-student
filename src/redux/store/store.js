@@ -6,6 +6,7 @@ import reduceAll from '../reducers'
 import saga from '../saga/saga'
 import studentSaga from '../saga/student-saga'
 import classesSaga from '../saga/classes-saga'
+import teacherSaga from '../saga/teacherSaga';
 
 
 const sagaMiddleware = createSagaMiddleware()
@@ -16,3 +17,5 @@ export default store
 sagaMiddleware.run(saga)
 sagaMiddleware.run(studentSaga)
 sagaMiddleware.run(classesSaga)
+sagaMiddleware.run(teacherSaga)
+

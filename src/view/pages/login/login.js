@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Input, Button, Checkbox, Card, Typography } from "antd";
+import { Form, Input, Button, Card, Typography } from "antd";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch} from "react-redux";
 
@@ -12,7 +12,7 @@ import "./login.css";
  * @author
  * @function Login
  **/
-const { Text } = Typography;
+const { Text, Link } = Typography;
 export const Login = (props) => {
   // let [isSubmit, setSubmit] = useState(false);
   // let [messageErr, setMessageErr] = useState("");
@@ -28,7 +28,7 @@ export const Login = (props) => {
     if(isLogged || isGuest){
       history.push('/dasboard')
     }
-  },[isLogged,isGuest])
+  },[isLogged,isGuest,history])
   let dispatch = useDispatch()
   const onFinish = (values) => {
     dispatch({ type: type.USER_LOGIN, payload: values });
@@ -46,7 +46,7 @@ export const Login = (props) => {
       className="card"
       title="Login"
       style={{ width: 500 }}
-      extra={<a onClick={guestLogin}>View with Guest</a>}
+      extra={<Link onClick={guestLogin}>View with guest</Link>}
     >
       <Form
         name="basic"

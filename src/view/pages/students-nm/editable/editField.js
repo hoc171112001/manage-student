@@ -8,6 +8,7 @@ import {
   Typography,
   Tag,
   Select,
+  message
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -54,14 +55,20 @@ const Editable = (props) => {
       type: type.STUDENT_FETCH,
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
-  }, [current, pageSize]);
+  }, [current, pageSize, dispatch, token]);
   useEffect(() => {
     setCurrent(1);
     dispatch({
       type: type.STUDENT_FETCH,
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
-  }, [deleteSucceed]);
+  }, [deleteSucceed,dispatch,token]);
+  useEffect(()=>{
+    deleteSucceed&&delMessage ? message.success(delMessage) : delMessage && message.error(delMessage)
+  },[delMessage,deleteSucceed])
+  useEffect(()=>{
+    updateSucceed&&updateMessage ? message.success(updateMessage) : updateMessage && message.error(updateMessage)
+  },[updateSucceed,updateMessage])
   useEffect(() => {
     if (dataDetails) {
       setDetails(dataDetails);
@@ -80,13 +87,13 @@ const Editable = (props) => {
           };
         })
       );
-    }else{
-      setData([])
+    } else {
+      setData([]);
     }
   }, [dataApi]);
   useEffect(() => {
     dispatch({ type: type.FETCH_CLASSES, payload: token });
-  }, []);
+  }, [dispatch,token]);
   useEffect(() => {
     if (classData) {
       let classArr = classData.map((classes) => {
@@ -163,7 +170,7 @@ const Editable = (props) => {
     setNewClass(record.classes);
     dispatch({
       type: type.DETAIL_STUDENT_FETCH,
-      payload: { token, key: record.key },
+      payload: { token, id: record.key },
     });
   };
 
@@ -199,7 +206,6 @@ const Editable = (props) => {
     }
   };
   const deleteCol = (record) => {
-    console.log(record);
     dispatch({ type: type.DELETE_STUDENT, payload: { id: record.key, token } });
   };
   const viewStudent = (record) => {
@@ -213,13 +219,13 @@ const Editable = (props) => {
       editable: true,
       render: (name, record) => {
         return (
-          <a
+          <Typography.Link
             onClick={() => {
               viewStudent(record);
             }}
           >
             {name}
-          </a>
+            </Typography.Link>
         );
       },
     },
@@ -280,7 +286,7 @@ const Editable = (props) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <a
+            <Typography.Link
               onClick={() => {
                 save(record.key);
               }}
@@ -289,9 +295,9 @@ const Editable = (props) => {
               }}
             >
               Save
-            </a>
+            </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+              <Typography.Link>Cancel</Typography.Link>
             </Popconfirm>
           </span>
         ) : (
@@ -343,9 +349,6 @@ const Editable = (props) => {
           loading={loading}
           onChange={onSearhChange}
         />
-        <Text type={deleteSucceed ? "success" : "danger"}>{delMessage}</Text>
-        <br />
-        <Text type={updateSucceed ? "success" : "danger"}>{updateMessage}</Text>
 
         <Table
           components={{

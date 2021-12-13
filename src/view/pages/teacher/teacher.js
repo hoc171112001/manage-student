@@ -8,9 +8,10 @@ import {
   Typography,
   Tag,
   Select,
+  message,
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { getToken, debounce } from "../../../helper/helper";
 import * as type from "../../../redux/const/const";
 /**
@@ -19,7 +20,7 @@ import * as type from "../../../redux/const/const";
  **/
 
 const Teacher = (props) => {
-  const history = useHistory();
+  // const history = useHistory();
   let [pageSize] = useState(10);
   let [current, setCurrent] = useState(1);
   let [q, setQ] = useState("");
@@ -30,20 +31,21 @@ const Teacher = (props) => {
   const [editingKey, setEditingKey] = useState("");
   const [children, setChild] = useState([]);
   let [newClasses, setNewClass] = useState([]);
-  const [details, setDetails] = useState(null);
-  let {
-    loading,
-    total,
-    delMessage,
-    deleteSucceed,
-    updateSucceed,
-    updateMessage,
-    dataDetails,
-  } = useSelector((state) => {
-    return state.student;
+  // const [details, setDetails] = useState(null);
+  let { loading, total } = useSelector((state) => {
+    return state.teacher;
   });
   let dataApi = useSelector((state) => {
-    return state.student.data;
+    return state.teacher.data;
+  });
+  let {
+    deleteSuccess,
+    deleteMessage,
+    detailTeacher,
+    updateSuccess,
+    updateMessage,
+  } = useSelector((state) => {
+    return state.teacher;
   });
   let { loadingClass, classData } = useSelector((state) => {
     return state.classes;
@@ -51,40 +53,44 @@ const Teacher = (props) => {
   // editing
   useEffect(() => {
     dispatch({
-      type: type.STUDENT_FETCH,
+      type: type.FETCH_TEACHER,
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
   }, [current, pageSize]);
+
   useEffect(() => {
     setCurrent(1);
     dispatch({
-      type: type.STUDENT_FETCH,
+      type: type.FETCH_TEACHER,
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
-  }, [deleteSucceed]);
-  useEffect(() => {
-    if (dataDetails) {
-      setDetails(dataDetails);
-    }
-  }, [dataDetails]);
+  }, [deleteSuccess]);
+  useEffect(()=>{
+    deleteSuccess&&deleteMessage.length ? message.success(deleteMessage) : deleteMessage.length && message.error(deleteMessage)
+  },[deleteMessage,deleteSuccess])
+  useEffect(()=>{
+    updateSuccess&&updateMessage.length ? message.success(updateMessage) : updateMessage.length && message.error(updateMessage)
+  },[updateSuccess,updateMessage])
   useEffect(() => {
     if (dataApi && dataApi.length) {
       setData(
         dataApi.map((data) => {
           return {
             key: data.id,
-            age: data.age,
-            address: data.addr,
+            age: data.info.age,
+            address: data.info.address,
             name: data.name,
             classes: data.classes,
           };
         })
       );
+    } else {
+      setData([]);
     }
   }, [dataApi]);
   useEffect(() => {
     dispatch({ type: type.FETCH_CLASSES, payload: token });
-  }, []);
+  }, [dispatch, token]);
   useEffect(() => {
     if (classData) {
       let classArr = classData.map((classes) => {
@@ -140,7 +146,7 @@ const Teacher = (props) => {
     setCurrent(1);
     setQ(query);
     dispatch({
-      type: type.STUDENT_FETCH,
+      type: type.FETCH_TEACHER,
       payload: { token, _page: 1, _limit: pageSize, query },
     });
   };
@@ -159,9 +165,13 @@ const Teacher = (props) => {
     });
     setEditingKey(record.key);
     setNewClass(record.classes);
+    // dispatch({
+    //   type: type.DETAIL_STUDENT_FETCH,
+    //   payload: { token, key: record.key },
+    // });
     dispatch({
-      type: type.DETAIL_STUDENT_FETCH,
-      payload: { token, key: record.key },
+      type: type.FETCH_DETAIL_TEACHER,
+      payload: { key: record.key, token },
     });
   };
 
@@ -184,9 +194,10 @@ const Teacher = (props) => {
         setData(newData);
         setEditingKey("");
         dispatch({
-          type: type.UPDATE_STUDENT,
-          payload: { token, data: { ...newData[index] }, remainData: details },
+          type: type.UPDATE_TEACHER,
+          payload: { data: newData[index], token, remainData: detailTeacher },
         });
+        // console.log(newData[index]);
       } else {
         newData.push(row);
         setData(newData);
@@ -197,10 +208,10 @@ const Teacher = (props) => {
     }
   };
   const deleteCol = (record) => {
-    dispatch({ type: type.DELETE_STUDENT, payload: { id: record.key, token } });
+    dispatch({ type: type.DELETE_TEACHER, payload: { id: record.key, token } });
   };
   const viewStudent = (record) => {
-    history.push(`/students/${record.key}`);
+    // history.push(`/students/${record.key}`);
   };
   const columns = [
     {
@@ -210,13 +221,13 @@ const Teacher = (props) => {
       editable: true,
       render: (name, record) => {
         return (
-          <a
+          <Typography.Link
             onClick={() => {
               viewStudent(record);
             }}
           >
             {name}
-          </a>
+          </Typography.Link>
         );
       },
     },
@@ -277,7 +288,7 @@ const Teacher = (props) => {
         const editable = isEditing(record);
         return editable ? (
           <span>
-            <a
+            <Typography.Link
               onClick={() => {
                 save(record.key);
               }}
@@ -286,9 +297,9 @@ const Teacher = (props) => {
               }}
             >
               Save
-            </a>
+            </Typography.Link>
             <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
+              <Typography.Link>Cancel</Typography.Link>
             </Popconfirm>
           </span>
         ) : (
@@ -328,12 +339,11 @@ const Teacher = (props) => {
   });
   // antd
   const { Option } = Select;
-  const { Text } = Typography;
+  // const { Text } = Typography;
   const { Search } = Input;
   return (
     <>
       <Form form={form} component={false}>
-        {console.log(dataApi)}
         <Search
           placeholder="input search text"
           onSearch={onSearch}
@@ -341,10 +351,6 @@ const Teacher = (props) => {
           loading={loading}
           onChange={onSearhChange}
         />
-        <Text type={deleteSucceed ? "success" : "danger"}>{delMessage}</Text>
-        <br />
-        <Text type={updateSucceed ? "success" : "danger"}>{updateMessage}</Text>
-
         <Table
           components={{
             body: {

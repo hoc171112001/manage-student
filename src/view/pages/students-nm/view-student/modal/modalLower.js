@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Button, Select, Modal } from "antd";
+import { Form, Input, Button, Modal } from "antd";
 import { useDispatch} from "react-redux";
 import * as type from "../../../../../redux/const/const";
 /**
@@ -8,6 +8,7 @@ import * as type from "../../../../../redux/const/const";
  **/
 
 export const ModalLower = (props) => {
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   useEffect(() => {
     if (props.dataDetails) {
@@ -25,7 +26,7 @@ export const ModalLower = (props) => {
           email:data.info?data.info.email:"",
       });
     }
-  }, [props.dataDetails]);
+  }, [props.dataDetails,form]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -46,7 +47,6 @@ export const ModalLower = (props) => {
   const tailLayout = {
     wrapperCol: { offset: 6, span: 18 },
   };
-  const [form] = Form.useForm();
 
   const onFinish = (values) => {
     let now= new Date().getFullYear()

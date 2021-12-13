@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { Spin, Typography } from "antd";
+import { Spin,message } from "antd";
 import { getToken } from "../../../../helper/helper";
 
 import { About } from "./viewStdnt/about";
@@ -31,10 +31,13 @@ const ViewStudent = (props) => {
   });
   useEffect(() => {
     dispatch({ type: type.FETCH_CLASSES, payload: token });
-  }, []);
+  },[dispatch,token]);
   useEffect(() => {
     dispatch({ type: type.DETAIL_STUDENT_FETCH, payload: { token, id:key } })
-  }, [updateDetailSuccess]);
+  }, [updateDetailSuccess,dispatch,token,key]);
+  useEffect(()=>{
+    updateDetailSuccess && updateDetailMessage ? message.success(updateDetailMessage) : updateDetailMessage && message(updateDetailMessage)
+  },[updateDetailSuccess,updateDetailMessage])
   useEffect(() => {
     if (dataApi) {
       setData(dataApi);
@@ -42,11 +45,11 @@ const ViewStudent = (props) => {
   }, [dataApi]);
 
   //
-  const {Text} = Typography
+  // const {Text} = Typography
   return (
     <div className="student-wrapper">
       <Spin spinning={loadingDetails} tip="Loading">
-        <Text type="warning" >{updateDetailMessage}</Text>
+        {/* <Text type="warning" >{updateDetailMessage}</Text> */}
         <div className="top-text">THÔNG TIN SINH VIÊN</div>
         <div className="student-info">
           <div className="info">

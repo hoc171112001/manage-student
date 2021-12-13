@@ -75,7 +75,7 @@ export const About = (props) => {
               {info.des &&
               (typeof info.des == "string" || typeof info.des == "number")
                 ? info.des && info.des
-                : typeof info.des == "object"
+                : typeof info.des == "object" && info.des.length
                 ? info.des.map((element) => {
                     let color =
                       element.length > 10

@@ -4,6 +4,7 @@ import { Link, Route, Switch } from "react-router-dom";
 import { NotFoundPage } from "../pages/notfound/notfound";
 import "./defaulayout.css";
 import { useDispatch, useSelector } from "react-redux";
+import { delToken } from "../../helper/helper";
 
 const { Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -13,13 +14,14 @@ const { SubMenu } = Menu;
  **/
 
 export const DefaltLayout = ({ routers, routers2 }) => {
-  const { isLogged, isGuest } = useSelector((state) => state.auth);
+  const { isLogged } = useSelector((state) => state.auth);
   let [collapsed, setCollapse] = useState(false);
   let onCollapse = (collapsed) => {
     setCollapse(collapsed);
   };
   const dispatch = useDispatch()
   const loggoutFunc=()=>{
+    delToken()
     dispatch({type:"USER_FETCH_FAILED",message:"Logout succeed!"})
     dispatch({type:"GUEST_FETCH_FAILED",message:"Logout succeed!"})
   }

@@ -46,7 +46,6 @@ export function fetchStudentDetails(data) {
 }
 export function deleteStudent(data) {
   if(data){
-    console.log(data);
     const AuthStr = "Bearer " + data.token;
   let option = {
     headers: { Authorization: AuthStr },

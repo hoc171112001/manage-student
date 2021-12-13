@@ -3,7 +3,6 @@ import {
   Table,
   Input,
   InputNumber,
-  Popconfirm,
   Form,
   Typography,
   Tag,
@@ -27,10 +26,10 @@ const StudentGuest = (props) => {
   const token = getToken();
   const [form] = Form.useForm();
   const [data, setData] = useState([]);
-  const [editingKey, setEditingKey] = useState("");
+  const [editingKey] = useState("");
   const [children, setChild] = useState([]);
-  let [newClasses, setNewClass] = useState([]);
-  const [details, setDetails] = useState(null);
+  let [newClasses] = useState([]);
+  // const [details, setDetails] = useState(null);
 
   let {
     loading,
@@ -39,7 +38,6 @@ const StudentGuest = (props) => {
     deleteSucceed,
     updateSucceed,
     updateMessage,
-    dataDetails,
   } = useSelector((state) => {
     return state.student;
   });
@@ -55,7 +53,7 @@ const StudentGuest = (props) => {
       type: type.STUDENT_FETCH,
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
-  }, [current, pageSize]);
+  }, [current, pageSize,dispatch,q,token]);
 //   useEffect(() => {
 //     setCurrent(1);
 //     dispatch({
@@ -63,11 +61,11 @@ const StudentGuest = (props) => {
 //       payload: { token, _page: current, _limit: pageSize, query: q },
 //     });
 //   }, [deleteSucceed]);
-  useEffect(() => {
-    if (dataDetails) {
-      setDetails(dataDetails);
-    }
-  }, [dataDetails]);
+  // useEffect(() => {
+  //   if (dataDetails) {
+  //     setDetails(dataDetails);
+  //   }
+  // }, [dataDetails]);
   useEffect(() => {
     if (dataApi && dataApi.length) {
       setData(
@@ -85,7 +83,7 @@ const StudentGuest = (props) => {
   }, [dataApi]);
   useEffect(() => {
     dispatch({ type: type.FETCH_CLASSES, payload: token });
-  }, []);
+  }, [dispatch,token]);
   useEffect(() => {
     if (classData) {
       let classArr = classData.map((classes) => {
@@ -211,13 +209,13 @@ const StudentGuest = (props) => {
       editable: true,
       render: (name, record) => {
         return (
-          <a
+          <Typography.Link
             onClick={() => {
               viewStudent(record);
             }}
           >
             {name}
-          </a>
+          </Typography.Link>
         );
       },
     },

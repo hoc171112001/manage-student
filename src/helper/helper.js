@@ -4,6 +4,9 @@ function saveToken(token) {
 function getToken() {
   return localStorage.getItem("token");
 }
+function delToken(){
+  return localStorage.removeItem("token")
+}
 function debounce(func, timeout = 600){
   let timer;
   return (...args) => {
@@ -11,4 +14,4 @@ function debounce(func, timeout = 600){
     timer = setTimeout(() => { func.apply(this, args); }, timeout);
   };
 }
-export { saveToken, getToken, debounce};
+export { saveToken, getToken, debounce, delToken};

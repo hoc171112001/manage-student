@@ -14,7 +14,7 @@ export const NotFoundPage = (props) => {
       subTitle="Sorry, the page you visited does not exist."
       extra={
         <Button type="primary">
-          <Link to="/user">Back User</Link>
+          <Link to="/dasboard">Back to Dashboard</Link>
         </Button>
       }
     />

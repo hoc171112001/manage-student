@@ -29,10 +29,10 @@ export const ModalUpper = (props) => {
         classes:props.dataDetails?props.dataDetails.classes:"",
       });
     }
-  },[props.dataDetails])
+  },[props.dataDetails,form])
   useEffect(()=>{
     dispatch({type:type.DETAIL_STUDENT_FETCH,payload:{token:props.dispatchData.token,key:props.dispatchData.key}})
-  },[])
+  },[props.dispatchData.key,props.dispatchData.token,dispatch])
   const [isModalVisible, setIsModalVisible] = useState(false);
   const showModal = () => {
     setIsModalVisible(true);
@@ -156,7 +156,7 @@ export const ModalUpper = (props) => {
                 label="Lớp"
                 rules={[
                   {
-                    required: true,
+                    required: false,
                   },
                 ]}
               >

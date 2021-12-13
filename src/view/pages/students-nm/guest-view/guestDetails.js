@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Spin, Typography } from "antd";
+import { Spin } from "antd";
 import { getToken } from "../../../../helper/helper";
 
 import { About } from "./viewStdnt/about";
@@ -28,10 +28,10 @@ const GuestView = (props) => {
   });
   useEffect(() => {
     dispatch({ type: type.FETCH_CLASSES, payload: token });
-  }, []);
+  }, [dispatch,token]);
   useEffect(() => {
-    dispatch({ type: type.DETAIL_STUDENT_FETCH, payload: { token, key } });
-  }, []);
+    dispatch({ type: type.DETAIL_STUDENT_FETCH, payload: { token, id:key } });
+  }, [dispatch,token,key]);
   useEffect(() => {
     if (dataApi) {
       setData(dataApi);

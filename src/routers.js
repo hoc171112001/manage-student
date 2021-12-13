@@ -9,8 +9,8 @@ import React from "react";
 const CreateStudent = React.lazy(()=>import('./view/pages/students-nm/add-student/addStudent'))
 const Editable = React.lazy(()=>import ('./view/pages/students-nm/editable/editField'))
 const ViewStudent = React.lazy(()=>import ('./view/pages/students-nm/view-student/viewStudent'))
-// const Teacher = React.lazy(()=>import ('./view/pages/teacher/teacher'))
-
+const Teacher = React.lazy(()=>import ('./view/pages/teacher/teacher'))
+const CreateTeacher = React.lazy(()=>import("./view/pages/teacher/add-teacher/addTeacher"))
 const routers = [
   {
     path: "/dasboard",
@@ -49,6 +49,27 @@ const routers = [
         child: [],
         hidden:true
       },
+    ],
+  },
+  {
+    path: "",
+    key: "sub3",
+    icon: <TeamOutlined/>,
+    title: "Teacher manager",
+    compn: "",
+    child: [
+      {
+        path:"/teachernm",
+        compn:<Teacher/>,
+        title:"List teacher",
+        key:"7"
+      },
+      {
+        path:"/addteacher",
+        compn:<CreateTeacher/>,
+        title:"Add teacher",
+        key:"8"
+      }
     ],
   },
   

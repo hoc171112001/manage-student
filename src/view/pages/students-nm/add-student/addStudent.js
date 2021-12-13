@@ -1,5 +1,5 @@
-import React, { useEffect} from "react";
-import { Form, Input, Button, Select ,Typography} from "antd";
+import React, { useEffect, useRef} from "react";
+import { Form, Input, Button, Select ,message} from "antd";
 import {useDispatch,useSelector} from 'react-redux';
 
 //
@@ -11,7 +11,7 @@ import {getToken} from "../../../../helper/helper"
  **/
 
 const CreateStudent = (props) => {
-    let {Text} = Typography
+  const resetBtnRef = useRef()
   const token = getToken()
   let {createSucceed,creMessage} = useSelector((state)=>{
       return state.student
@@ -38,17 +38,21 @@ const CreateStudent = (props) => {
   const [form] = Form.useForm();
   const onFinish = (values) => {
     dispatch({type:type.CREATE_STUDENT,payload:{data:values,token}})
+    resetBtnRef.current.click()
   };
   useEffect(()=>{
     dispatch({type:type.FETCH_CLASSES,payload:token})
-  },[])
+  },[dispatch,token])
+  useEffect(()=>{
+    createSucceed && creMessage ? message.success(creMessage) : creMessage && message.error(creMessage)
+  },[createSucceed,creMessage])
   const onReset = () => {
     form.resetFields();
   };
   return (
     <>
       <h2>Create students</h2>
-      <Text type={createSucceed?"success":"danger"} style={{margin:"0px auto"}}>{creMessage}</Text>
+      {/* <Text type={createSucceed?"success":"danger"} style={{margin:"0px auto"}}>{creMessage}</Text> */}
       <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
         <Form.Item
           name="name"
@@ -106,7 +110,7 @@ const CreateStudent = (props) => {
           <Button type="primary" htmlType="submit">
             Submit
           </Button>
-          <Button htmlType="button" onClick={onReset}>
+          <Button htmlType="button" onClick={onReset} ref={resetBtnRef}>
             Reset
           </Button>
         </Form.Item>
