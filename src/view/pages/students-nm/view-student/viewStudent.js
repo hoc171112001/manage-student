@@ -18,7 +18,7 @@ import { ModalLower } from "./modal/modalLower";
  **/
 
 const ViewStudent = (props) => {
- const { key } = useParams();
+  const { key } = useParams();
   const dispatch = useDispatch();
   const token = getToken();
   const [data, setData] = useState([]);

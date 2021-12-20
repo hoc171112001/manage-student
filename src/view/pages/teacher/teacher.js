@@ -11,16 +11,16 @@ import {
   message,
 } from "antd";
 import { useSelector, useDispatch } from "react-redux";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { getToken, debounce } from "../../../helper/helper";
 import * as type from "../../../redux/const/const";
 /**
  * @author
- * @function Editable
+ * @function Teacher
  **/
 
 const Teacher = (props) => {
-  // const history = useHistory();
+  const history = useHistory();
   let [pageSize] = useState(10);
   let [current, setCurrent] = useState(1);
   let [q, setQ] = useState("");
@@ -67,9 +67,17 @@ const Teacher = (props) => {
   }, [deleteSuccess]);
   useEffect(()=>{
     deleteSuccess&&deleteMessage.length ? message.success(deleteMessage) : deleteMessage.length && message.error(deleteMessage)
+    return ()=>{
+      dispatch({type:type.DELETE_TEACHER_FAILED,message:""})
+      message.destroy()
+    }
   },[deleteMessage,deleteSuccess])
   useEffect(()=>{
     updateSuccess&&updateMessage.length ? message.success(updateMessage) : updateMessage.length && message.error(updateMessage)
+    return ()=>{
+      dispatch({type:type.UPDATE_TEACHER_FAILED,message:""})
+      message.destroy()
+    }
   },[updateSuccess,updateMessage])
   useEffect(() => {
     if (dataApi && dataApi.length) {
@@ -211,13 +219,13 @@ const Teacher = (props) => {
     dispatch({ type: type.DELETE_TEACHER, payload: { id: record.key, token } });
   };
   const viewStudent = (record) => {
-    // history.push(`/students/${record.key}`);
+    history.push(`/teachernm/${record.key}`);
   };
   const columns = [
     {
       title: "Tên",
       dataIndex: "name",
-      width: "25%",
+      width: "15%",
       editable: true,
       render: (name, record) => {
         return (
@@ -234,7 +242,7 @@ const Teacher = (props) => {
     {
       title: "Tuổi",
       dataIndex: "age",
-      width: "15%",
+      width: "10%",
     },
     {
       title: "Địa chỉ",
@@ -284,6 +292,8 @@ const Teacher = (props) => {
     {
       title: "Thao tác",
       dataIndex: "operation",
+      fixed:"right",
+      width: 100,
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -358,6 +368,7 @@ const Teacher = (props) => {
             },
           }}
           bordered
+          scroll={{ x: 1100 }}
           loading={loading}
           dataSource={data}
           columns={mergedColumns}
@@ -368,6 +379,7 @@ const Teacher = (props) => {
             current,
             total,
           }}
+          size="small"
         />
       </Form>
     </>

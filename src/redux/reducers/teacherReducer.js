@@ -11,7 +11,9 @@ let initState = {
     updateSuccess:false,
     updateMessage:"",
     createSuccess:false,
-    createMessage:""
+    createMessage:"",
+    updateDetailSuccess:false,
+    updateDetailMessage:""
 }
  export function teacherReducer(state={...initState},action){
     switch(action.type){
@@ -97,6 +99,22 @@ let initState = {
             ...state,
             loadingDetails:false,
             detailTeacher:[]
+        }
+        //update details teacher
+        case type.UPDATE_TEACHER_DETAIL : return {
+            ...state,
+            updateDetailSuccess:false,
+            updateDetailMessage:""
+        }
+        case type.UPDATE_TEACHER_DETAIL_SUCCEEDED: return {
+            ...state,
+            updateDetailSuccess:true,
+            updateDetailMessage:"Update Success!"
+        }
+        case type.UPDATE_TEACHER_DETAIL_FAILED:return{
+            ...state,
+            updateDetailSuccess:false,
+            updateDetailMessage:action.message
         }
         default:return state
     }

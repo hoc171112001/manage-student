@@ -54,6 +54,22 @@ export function updateListTeacher(data) {
     });
   }
 }
+
+export function updateDetailTeacher(data) {
+  if (data) {
+    const AuthStr = "Bearer " + data.dispatchData.token;
+    return axios({
+      method: "put",
+      url: `${baseApi}/teacherInfo/${data.dispatchData.key}`,
+      headers: { Authorization: AuthStr },
+      data: data.data
+    }).then((response) => {
+      return response.data;
+    });
+  }
+}
+
+
 export function createTeacher(data) {
   if (data) {
     const AuthStr = "Bearer " + data.token;

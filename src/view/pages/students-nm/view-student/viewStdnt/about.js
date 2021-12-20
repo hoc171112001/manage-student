@@ -65,6 +65,7 @@ export const About = (props) => {
       ]);
     }
   }, [dataDetails]);
+  console.log("object");
   return (
     <div className={props.class}>
       {infoData.map((info) => {

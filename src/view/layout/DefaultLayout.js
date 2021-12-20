@@ -28,6 +28,9 @@ export const DefaltLayout = ({ routers, routers2 }) => {
   return (
     <Layout style={{ minHeight: "100vh" }} className="layout">
       <Sider
+        width={160}
+        breakpoint="sm"
+        collapsedWidth="0"
         collapsible
         collapsed={collapsed}
         onCollapse={onCollapse}
@@ -91,7 +94,10 @@ export const DefaltLayout = ({ routers, routers2 }) => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <div>
+        <div style={{
+          position:"relative",
+          margin:"10px 0px"
+        }}>
           <Button
             type="primary"
             style={{

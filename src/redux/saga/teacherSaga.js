@@ -46,6 +46,14 @@ function* updateListTeacher(action) {
       yield put({type:type.UPDATE_TEACHER_FAILED,message:e.message})
   }
 }
+function* updateDetailTeacher(action) {
+  try {
+    yield call(api.updateDetailTeacher, action.payload);
+    yield put({ type: type.UPDATE_TEACHER_DETAIL_SUCCEEDED});
+  } catch (e) {
+      yield put({type:type.UPDATE_TEACHER_DETAIL_FAILED,message:e.message})
+  }
+}
 
 
 function* teacherSaga() {
@@ -54,5 +62,6 @@ function* teacherSaga() {
   yield takeEvery(type.FETCH_DETAIL_TEACHER, detailsTeacher);
   yield takeEvery(type.UPDATE_TEACHER, updateListTeacher);
   yield takeEvery(type.CREATE_TEACHER, createTeacher);
+  yield takeEvery(type.UPDATE_TEACHER_DETAIL, updateDetailTeacher);
 }
 export default teacherSaga;

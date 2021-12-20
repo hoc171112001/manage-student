@@ -47,6 +47,7 @@
     }
     .about {
       @include flexible($percent: 70%);
+      margin-left: 10px;
       .info-details {
         @include details();
       }
@@ -90,6 +91,7 @@
         @include flexible($percent: 100%);
       }
       .about {
+        margin-left: 0px;
         @include flexible($percent: 100%);
       }
     }

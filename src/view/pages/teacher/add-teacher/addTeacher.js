@@ -49,6 +49,9 @@ const CreateTeacher = (props) => {
   useEffect(()=>{
     createSuccess && createMessage ? message.success(createMessage)
     : createMessage && message.error(createMessage)
+    return ()=>{
+      dispatch({type:type.CREATE_TEACHER_FAILED,message:""})
+    }
   },[createSuccess,createMessage])
   const onReset = () => {
     form.resetFields();

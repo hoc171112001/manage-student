@@ -55,6 +55,9 @@ const Editable = (props) => {
       type: type.STUDENT_FETCH,
       payload: { token, _page: current, _limit: pageSize, query: q },
     });
+    return ()=>{
+      message.destroy()
+    }
   }, [current, pageSize, dispatch, token]);
   useEffect(() => {
     setCurrent(1);
@@ -65,9 +68,15 @@ const Editable = (props) => {
   }, [deleteSucceed,dispatch,token]);
   useEffect(()=>{
     deleteSucceed&&delMessage ? message.success(delMessage) : delMessage && message.error(delMessage)
+    return ()=>{
+      dispatch({type:type.DELETE_STUDENT_FAILED,message:""})
+    }
   },[delMessage,deleteSucceed])
   useEffect(()=>{
     updateSucceed&&updateMessage ? message.success(updateMessage) : updateMessage && message.error(updateMessage)
+    return ()=>{
+      dispatch({type:type.UPDATE_STUDENT_FAILED,message:""})
+    }
   },[updateSucceed,updateMessage])
   useEffect(() => {
     if (dataDetails) {
@@ -282,6 +291,8 @@ const Editable = (props) => {
     {
       title: "Thao tác",
       dataIndex: "operation",
+      fixed:"right",
+      width: 100,
       render: (_, record) => {
         const editable = isEditing(record);
         return editable ? (
@@ -337,7 +348,7 @@ const Editable = (props) => {
   });
   // antd
   const { Option } = Select;
-  const { Text } = Typography;
+  // const { Text } = Typography;
   const { Search } = Input;
   return (
     <>
@@ -356,7 +367,9 @@ const Editable = (props) => {
               cell: EditableCell,
             },
           }}
+          scroll={{ x: 1100 }}
           bordered
+          size="small"
           loading={loading}
           dataSource={data}
           columns={mergedColumns}

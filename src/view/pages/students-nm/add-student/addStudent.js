@@ -45,6 +45,9 @@ const CreateStudent = (props) => {
   },[dispatch,token])
   useEffect(()=>{
     createSucceed && creMessage ? message.success(creMessage) : creMessage && message.error(creMessage)
+    return ()=>{
+      dispatch({type:type.CREATE_STUDENT_FAILED,message:""})
+    }
   },[createSucceed,creMessage])
   const onReset = () => {
     form.resetFields();

@@ -4,13 +4,13 @@ import {
   TeamOutlined,
 } from "@ant-design/icons";
 import React from "react";
-//outta import lazy loading = if component dont even using so dont load this = higher performance
-// const Student = React.lazy(()=>import('./view/pages/students-nm/student-cpn/student'))
 const CreateStudent = React.lazy(()=>import('./view/pages/students-nm/add-student/addStudent'))
 const Editable = React.lazy(()=>import ('./view/pages/students-nm/editable/editField'))
 const ViewStudent = React.lazy(()=>import ('./view/pages/students-nm/view-student/viewStudent'))
 const Teacher = React.lazy(()=>import ('./view/pages/teacher/teacher'))
 const CreateTeacher = React.lazy(()=>import("./view/pages/teacher/add-teacher/addTeacher"))
+const ViewTeacher = React.lazy(()=>import("./view/pages/teacher/view-teacher/viewTeacher"))
+
 const routers = [
   {
     path: "/dasboard",
@@ -69,7 +69,15 @@ const routers = [
         compn:<CreateTeacher/>,
         title:"Add teacher",
         key:"8"
-      }
+      },
+      {
+        path: "/teachernm/:key",
+        key: "9",
+        title: "",
+        compn: <ViewTeacher/>,
+        child: [],
+        hidden:true
+      },
     ],
   },
   
